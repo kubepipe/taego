@@ -12,7 +12,6 @@
 tree -I vendor
 ```
 .
-├── LICENSE
 ├── Makefile
 ├── README.md
 ├── api
@@ -25,10 +24,6 @@ tree -I vendor
 │   ├── common.go
 │   └── example.go
 ├── dao
-│   ├── const.go
-│   ├── errors.go
-│   ├── request.go
-│   └── response.go
 ├── etc
 │   └── config.yaml
 ├── go.mod
@@ -48,12 +43,18 @@ tree -I vendor
 │   │   └── util.go
 │   └── watcher
 │       └── watcher.go
+├── license
 ├── main.go
+├── mconst
+│   ├── const.go
+│   ├── errors.go
+│   ├── request.go
+│   └── response.go
 └── service
     └── example
         └── example.go
 
-15 directories, 25 files
+16 directories, 25 files
 ```
 
 * main.go 入口函数
