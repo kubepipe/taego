@@ -67,6 +67,10 @@ tree -I vendor
 * lib 对基础依赖的封装,如http、mysql、k8s、log
 * service 第三方依赖服务调用
 
+# roadmap 
+
+https://github.com/orgs/kubepipe/projects/1
+
 # Some else
 
 welcome join!
