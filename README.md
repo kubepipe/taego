@@ -61,7 +61,7 @@ tree -I vendor
 * controller 主要业务逻辑
 * bin 编译后的可执行文件
 * etc 配置文件
-* const 全局常量、变量定义
+* mconst 全局常量、变量定义
 * dao 数据增删改查
 * lib 对基础依赖的封装,如http、mysql、k8s、log
 * service 第三方依赖服务调用
