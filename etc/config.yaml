@@ -1,0 +1,12 @@
+debug:
+  address: ":9091"
+  opentrace:
+    address: ":9092"
+    switch: true
+  system:
+    token: 
+  example:
+    host: "www.baidu.com"
+
+release:
+
