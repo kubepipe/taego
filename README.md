@@ -1,11 +1,12 @@
 # Introduction
 
-一个golang apiserver的脚手架
+一个golang apiserver的脚手架, 在不引入复杂性的前提下保证功能性.
 
 # Feature
 
 * 轻量
 * Gopher 
+* 路子野
 
 # Director
 

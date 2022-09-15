@@ -25,24 +25,11 @@ func watch(funcs []func() error) error {
 		return nil
 	}
 
-	//TODO 加锁
-	mlog.Info(logPrefix + "Try to elect")
-	//hostname, err := os.Hostname()
-	//if err != nil {
-	//	return err
-	//}
+	//TODO lock
 
-	const watcherKey = "wukong_watcher"
-	//err = mylock.Lock(watcherKey, time.Minute*10, hostname)
-	//if err != nil {
-	//	return err
-	//}
-
-	//TODO 解锁
+	//TODO unlock
 	defer func() {
-		//if err := mylock.Unlock(watcherKey, hostname); err != nil {
-		//	mlog.Error(logPrefix, "err", err)
-		//}
+
 	}()
 
 	mlog.Info(logPrefix + "Started")
