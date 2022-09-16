@@ -53,23 +53,37 @@ func NewDefaultClient(host string, header http.Header) *Client {
 	}
 }
 
-func (c *Client) Get(ctx context.Context, path string) (int, []byte, error) {
-	return c.call(ctx, http.MethodGet, path, c.header, nil)
+func (c *Client) DefaultHeader() http.Header {
+	return c.header
 }
 
-func (c *Client) Post(ctx context.Context, path string, body []byte) (int, []byte, error) {
-	return c.call(ctx, http.MethodPost, path, c.header, body)
+func (c *Client) Get(ctx context.Context, path string, header http.Header,
+) (int, []byte, error) {
+
+	return c.call(ctx, http.MethodGet, path, header, nil)
 }
 
-func (c *Client) Put(ctx context.Context, path string, body []byte) (int, []byte, error) {
-	return c.call(ctx, http.MethodPut, path, c.header, body)
+func (c *Client) Post(ctx context.Context, path string, body []byte, header http.Header,
+) (int, []byte, error) {
+
+	return c.call(ctx, http.MethodPost, path, header, body)
 }
 
-func (c *Client) Delete(ctx context.Context, path string, body []byte) (int, []byte, error) {
-	return c.call(ctx, http.MethodDelete, path, c.header, body)
+func (c *Client) Put(ctx context.Context, path string, body []byte, header http.Header,
+) (int, []byte, error) {
+
+	return c.call(ctx, http.MethodPut, path, header, body)
 }
 
-func (c *Client) call(ctx context.Context, method, path string, header http.Header, body []byte) (int, []byte, error) {
+func (c *Client) Delete(ctx context.Context, path string, body []byte, header http.Header,
+) (int, []byte, error) {
+
+	return c.call(ctx, http.MethodDelete, path, header, body)
+}
+
+func (c *Client) call(ctx context.Context, method, path string, header http.Header, body []byte,
+) (int, []byte, error) {
+
 	if c == nil {
 		return 500, nil, errors.New("client is nil")
 	}

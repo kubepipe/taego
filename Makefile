@@ -17,4 +17,5 @@ run:build
 	export MODE=debug
 	./bin/server
 
-
+test:
+	go test ./... -cover -v
