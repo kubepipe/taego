@@ -53,39 +53,43 @@ func NewDefaultClient(host string, header http.Header) *Client {
 	}
 }
 
-func (c *Client) DefaultHeader() http.Header {
-	return c.header
-}
-
+// if header is nil, c.header will be used by default
 func (c *Client) Get(ctx context.Context, path string, header http.Header,
 ) (int, []byte, error) {
 
 	return c.call(ctx, http.MethodGet, path, header, nil)
 }
 
+// if header is nil, c.header will be used by default
 func (c *Client) Post(ctx context.Context, path string, body []byte, header http.Header,
 ) (int, []byte, error) {
 
 	return c.call(ctx, http.MethodPost, path, header, body)
 }
 
+// if header is nil, c.header will be used by default
 func (c *Client) Put(ctx context.Context, path string, body []byte, header http.Header,
 ) (int, []byte, error) {
 
 	return c.call(ctx, http.MethodPut, path, header, body)
 }
 
+// if header is nil, c.header will be used by default
 func (c *Client) Delete(ctx context.Context, path string, body []byte, header http.Header,
 ) (int, []byte, error) {
 
 	return c.call(ctx, http.MethodDelete, path, header, body)
 }
 
+// if header is nil, c.header will be used by default
 func (c *Client) call(ctx context.Context, method, path string, header http.Header, body []byte,
 ) (int, []byte, error) {
 
 	if c == nil {
 		return 500, nil, errors.New("client is nil")
+	}
+	if c.header == nil {
+		c.header = make(http.Header)
 	}
 
 	start := time.Now()
@@ -101,7 +105,7 @@ func (c *Client) call(ctx context.Context, method, path string, header http.Head
 			Host:   c.host,
 			Path:   path,
 		},
-		Header: make(http.Header),
+		Header: c.header,
 	}
 
 	req.Header.Set("Host", c.host)
@@ -134,6 +138,7 @@ func (c *Client) call(ctx context.Context, method, path string, header http.Head
 
 	b, err := ioutil.ReadAll(resp.Body)
 
+	// TODO trace replace this
 	if util.GetMode() == mconst.MODE_DEBUG {
 		bb := string(b)
 		if len(bb) > 2000 {

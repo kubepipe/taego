@@ -23,7 +23,7 @@ type (
 )
 
 func GetExampleData(ctx context.Context, req *ReqExample) (ResExample, error) {
-	httpCode, resBody, err := client.Get(ctx, "/", client.DefaultHeader())
+	httpCode, resBody, err := client.Get(ctx, "/", nil)
 	if err != nil {
 		return nil, err
 	}
