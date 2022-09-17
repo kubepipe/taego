@@ -1,11 +1,15 @@
 package mconst
 
-import "taego/lib/trace"
-
 type (
 	Response struct {
-		Message string       `json:"message"`
-		Success bool         `json:"success"`
-		Trace   *trace.Trace `json:"trace,omitempty"`
+		Message string     `json:"message,omitempty"`
+		Success bool       `json:"success,omitempty"`
+		Trace   *TraceInfo `json:"trace,omitempty"`
+	}
+
+	TraceInfo struct {
+		Id       int32  `json:"id,omitempty"`
+		SourceIp string `json:"sourceIp,omitempty"`
+		ServerIp string `json:"serverIp,omitempty"`
 	}
 )

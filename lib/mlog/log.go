@@ -31,22 +31,42 @@ func init() {
 	l = logp.Sugar()
 }
 
-func Debug(args ...interface{}) {
+func Debug(args ...any) {
 	l.Debug(args)
 }
 
-func Info(args ...interface{}) {
-	l.Info(args)
+func Debugf(template string, args ...any) {
+	l.Debugf(template, args...)
 }
 
-func Warn(args ...interface{}) {
-	l.Warn(args)
+func Info(args ...any) {
+	l.Info(args...)
 }
 
-func Error(args ...interface{}) {
-	l.Error(args)
+func Infof(template string, args ...any) {
+	l.Infof(template, args...)
 }
 
-func Fatal(args ...interface{}) {
-	l.Fatal(args)
+func Warn(args ...any) {
+	l.Warn(args...)
+}
+
+func Warnf(template string, args ...any) {
+	l.Warnf(template, args...)
+}
+
+func Error(args ...any) {
+	l.Error(args...)
+}
+
+func Errorf(template string, args ...any) {
+	l.Errorf(template, args...)
+}
+
+func Fatal(args ...any) {
+	l.Fatal(args...)
+}
+
+func Fatalf(template string, args ...any) {
+	l.Fatalf(template, args...)
 }

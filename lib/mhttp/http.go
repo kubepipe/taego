@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"net"
@@ -12,6 +13,7 @@ import (
 	"time"
 
 	"taego/lib/mlog"
+	"taego/lib/mtrace"
 )
 
 type Client struct {
@@ -81,6 +83,10 @@ func (c *Client) Delete(ctx context.Context, path string, body []byte, header ht
 func (c *Client) call(ctx context.Context, method, path string, header http.Header, body []byte,
 ) (int, []byte, error) {
 
+	trace := mtrace.GetTrace(ctx).SubTrace(fmt.Sprintf("%s %s%s", method, c.host, path))
+	ctx = mtrace.ContextWithTrace(ctx, trace)
+	defer func() { trace.Done() }()
+
 	if c == nil {
 		return 500, nil, errors.New("client is nil")
 	}
@@ -131,8 +137,6 @@ func (c *Client) call(ctx context.Context, method, path string, header http.Head
 	defer resp.Body.Close()
 
 	b, err := ioutil.ReadAll(resp.Body)
-
-	// TODO trace replace this
 
 	return resp.StatusCode, b, err
 }

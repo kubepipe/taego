@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"os"
+	"taego/lib/util"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -11,17 +12,12 @@ import (
 func Run() *gin.Engine {
 	gin.SetMode(os.Getenv("MODE"))
 	e := gin.New()
-	e.Use(setspan)
-	e.Use(gin.LoggerWithFormatter(ginLoger))
+	e.Use(util.SetSpan2Gin)
+	//e.Use(gin.LoggerWithFormatter(ginLoger))
 	e.Use(gin.Recovery())
 
 	setRoute(e)
 	return e
-}
-
-func setspan(c *gin.Context) {
-	// TODO
-	//trace.SetSpan(c, config.OpentraceSwitch())
 }
 
 func ginLoger(param gin.LogFormatterParams) string {

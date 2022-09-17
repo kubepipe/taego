@@ -6,4 +6,10 @@ debug:
     host: "baidu.com"
 
 release:
+  address: ":9091"
+  system:
+    token: 
+  example:
+    host: "baidu.com"
+
 

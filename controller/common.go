@@ -1,16 +1,15 @@
 package controller
 
 import (
-	"context"
-
 	"taego/lib/mlog"
-	"taego/lib/trace"
+	"taego/lib/mtrace"
+	"taego/lib/util"
 	"taego/mconst"
 
 	"github.com/gin-gonic/gin"
 )
 
-func success(c *gin.Context, obj interface{}) {
+func success(c *gin.Context, obj any) {
 	res(c, 200, &mconst.Response{
 		Success: true,
 		Trace:   traceInfo(c),
@@ -25,32 +24,27 @@ func fail(c *gin.Context, err error) {
 	}, nil)
 }
 
-func res(c *gin.Context, httpcode int, response *mconst.Response, data interface{}) {
+func res(c *gin.Context, httpcode int, response *mconst.Response, data any) {
 	c.JSON(httpcode, struct {
 		*mconst.Response
-		Data interface{} `json:"data,omitempty"`
+		Data any `json:"data,omitempty"`
 	}{
 		Response: response,
 		Data:     data,
 	})
 	if response != nil && !response.Success {
-		var args = make([]interface{}, 0, 5)
-		args = []interface{}{"fail response", "httpcode", httpcode, response.Message}
-		if response.Trace != nil {
-			args = append(args, response.Trace.Id)
-		}
-		mlog.Info(args...)
+		mlog.Info("fail response ", "httpcode ", httpcode, response.Message, response.Trace.Id)
 	}
 	c.Abort()
 }
 
-// TODO trace
-func traceInfo(c *gin.Context) *trace.Trace {
+func traceInfo(c *gin.Context) *mconst.TraceInfo {
 
-	return nil
-}
+	span := util.GetSpanFromGin(c)
 
-// TODO
-func GetSpan(c *gin.Context) context.Context {
-	return context.TODO()
+	return &mconst.TraceInfo{
+		Id:       mtrace.GetTraceId(span),
+		SourceIp: c.ClientIP(),
+		ServerIp: util.GetLocalIp(),
+	}
 }
