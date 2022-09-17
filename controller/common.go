@@ -25,14 +25,6 @@ func fail(c *gin.Context, err error) {
 	}, nil)
 }
 
-func unauth(c *gin.Context) {
-	res(c, 200, &mconst.Response{
-		Message: "unauthorized",
-		Success: false,
-		Trace:   traceInfo(c),
-	}, nil)
-}
-
 func res(c *gin.Context, httpcode int, response *mconst.Response, data interface{}) {
 	c.JSON(httpcode, struct {
 		*mconst.Response
@@ -47,7 +39,7 @@ func res(c *gin.Context, httpcode int, response *mconst.Response, data interface
 		if response.Trace != nil {
 			args = append(args, response.Trace.Id)
 		}
-		mlog.Info(args)
+		mlog.Info(args...)
 	}
 	c.Abort()
 }

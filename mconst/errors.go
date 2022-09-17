@@ -7,5 +7,5 @@ func (e myerr) Error() string {
 }
 
 const (
-	EXAMPLE_ERROR = myerr("some error")
+	ERROR_UNAUTHORIZED = myerr("unauthorized")
 )

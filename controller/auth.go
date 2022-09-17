@@ -2,6 +2,7 @@ package controller
 
 import (
 	"taego/lib/config"
+	"taego/mconst"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,7 +10,7 @@ import (
 func Auth(c *gin.Context) {
 	token := c.Request.Header.Get("system-token")
 	if token != config.Config.UString("system.token", "") {
-		unauth(c)
+		fail(c, mconst.ERROR_UNAUTHORIZED)
 		return
 	}
 }
