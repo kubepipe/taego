@@ -20,7 +20,6 @@ func success(c *gin.Context, obj interface{}) {
 
 func fail(c *gin.Context, err error) {
 	res(c, 200, &mconst.Response{
-		Code:    -1,
 		Success: false,
 		Message: err.Error(),
 		Trace:   traceInfo(c),
@@ -29,7 +28,6 @@ func fail(c *gin.Context, err error) {
 
 func unauth(c *gin.Context) {
 	res(c, 200, &mconst.Response{
-		Code:    401,
 		Message: "unauthorized",
 		Success: false,
 		Trace:   traceInfo(c),
