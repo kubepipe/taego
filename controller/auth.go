@@ -13,4 +13,9 @@ func Auth(c *gin.Context) {
 		fail(c, mconst.ERROR_UNAUTHORIZED)
 		return
 	}
+
+	setUser(GetSpan(c), &mconst.Userinfo{
+		Name: "admin",
+		Erp:  "admin",
+	})
 }

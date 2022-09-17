@@ -14,7 +14,7 @@ build:clean pre
 	GO111MODULE=on CGO_ENABLED=0 go build -o bin/server main.go
 
 run:build
-	MODE=$1 ./bin/server
+	MODE=release ./bin/server
 
 test:
 	go test ./... -cover -v

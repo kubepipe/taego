@@ -3,7 +3,7 @@ package mconst
 type (
 	Response struct {
 		Message string     `json:"message,omitempty"`
-		Success bool       `json:"success,omitempty"`
+		Success bool       `json:"success"`
 		Trace   *TraceInfo `json:"trace,omitempty"`
 	}
 

@@ -7,66 +7,62 @@ import (
 	"go.uber.org/zap"
 )
 
-var l *zap.SugaredLogger
+var l *zap.Logger
 
 func init() {
-	var (
-		logp *zap.Logger
-		err  error
-	)
+	var err error
 
 	options := []zap.Option{
 		zap.AddCallerSkip(1),
 	}
 	switch os.Getenv("MODE") {
 	case "release":
-		logp, err = zap.NewProduction(options...)
+		l, err = zap.NewProduction(options...)
 	default:
-		logp, err = zap.NewDevelopment(options...)
+		l, err = zap.NewDevelopment(options...)
 	}
 
 	if err != nil {
 		log.Fatal(err)
 	}
-	l = logp.Sugar()
 }
 
-func Debug(args ...any) {
-	l.Debug(args)
+func Debug(message string, args ...zap.Field) {
+	l.Debug(message, args...)
 }
 
 func Debugf(template string, args ...any) {
-	l.Debugf(template, args...)
+	l.Sugar().Debugf(template, args...)
 }
 
-func Info(args ...any) {
-	l.Info(args...)
+func Info(message string, args ...zap.Field) {
+	l.Info(message, args...)
 }
 
 func Infof(template string, args ...any) {
-	l.Infof(template, args...)
+	l.Sugar().Infof(template, args...)
 }
 
-func Warn(args ...any) {
-	l.Warn(args...)
+func Warn(message string, args ...zap.Field) {
+	l.Warn(message, args...)
 }
 
 func Warnf(template string, args ...any) {
-	l.Warnf(template, args...)
+	l.Sugar().Warnf(template, args...)
 }
 
-func Error(args ...any) {
-	l.Error(args...)
+func Error(message string, args ...zap.Field) {
+	l.Error(message, args...)
 }
 
 func Errorf(template string, args ...any) {
-	l.Errorf(template, args...)
+	l.Sugar().Errorf(template, args...)
 }
 
-func Fatal(args ...any) {
-	l.Fatal(args...)
+func Fatal(message string, args ...zap.Field) {
+	l.Fatal(message, args...)
 }
 
 func Fatalf(template string, args ...any) {
-	l.Fatalf(template, args...)
+	l.Sugar().Fatalf(template, args...)
 }

@@ -9,13 +9,14 @@ import (
 	"taego/lib/mlog"
 
 	"github.com/facebookgo/grace/gracehttp"
+	"go.uber.org/zap"
 )
 
 func main() {
 
 	address, err := config.Config.String("address")
 	if err != nil {
-		mlog.Fatal(err)
+		mlog.Fatal("get config err", zap.Error(err))
 	}
 
 	s := &http.Server{

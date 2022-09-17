@@ -5,17 +5,19 @@ import (
 	"time"
 
 	"taego/lib/mlog"
+
+	"go.uber.org/zap"
 )
 
 const (
-	logPrefix = "miramar-watcher "
+	logPrefix = "mwatcher"
 )
 
 func Watch(funcs []func() error) {
 
 	for range time.Tick(time.Second * 5) {
 		if err := watch(funcs); err != nil {
-			mlog.Error(logPrefix, "err", err)
+			mlog.Error(logPrefix, zap.Error(err))
 		}
 	}
 }
@@ -31,8 +33,6 @@ func watch(funcs []func() error) error {
 	defer func() {
 
 	}()
-
-	mlog.Info(logPrefix + "Started")
 
 	w := &wait{}
 	for _, f := range funcs {
@@ -52,13 +52,13 @@ func (wg *wait) run(runner func() error) {
 	go func() {
 		defer func() {
 			if e := recover(); e != nil {
-				mlog.Error(logPrefix, "err", e)
+				mlog.Error(logPrefix, zap.Any("recover", e))
 			}
 			wg.Done()
 		}()
 
 		if err := runner(); err != nil {
-			mlog.Error(logPrefix, "err", err)
+			mlog.Error(logPrefix, zap.Error(err))
 		}
 	}()
 }

@@ -14,6 +14,8 @@ import (
 
 	"taego/lib/mlog"
 	"taego/lib/mtrace"
+
+	"go.uber.org/zap"
 )
 
 type Client struct {
@@ -35,13 +37,13 @@ func NewDefaultClient(host string, header http.Header) *Client {
 				DisableCompression:    true,
 				ResponseHeaderTimeout: timeout,
 				DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
-					mlog.Debug("connectAddrList", "addr", addr)
+					mlog.Debug("connectAddrList", zap.String("addr", addr))
 					c, err := net.DialTimeout("tcp", addr, time.Second)
 					if err != nil {
-						mlog.Error("ConnectError", "addr", addr, "err", err)
+						mlog.Error("ConnectError", zap.String("addr", addr), zap.Error(err))
 						return nil, err
 					}
-					mlog.Debug("connectHost", "addr", addr)
+					mlog.Debug("connectHost", zap.String("addr", addr))
 					return c, nil
 				},
 			},
@@ -83,8 +85,7 @@ func (c *Client) Delete(ctx context.Context, path string, body []byte, header ht
 func (c *Client) call(ctx context.Context, method, path string, header http.Header, body []byte,
 ) (int, []byte, error) {
 
-	trace := mtrace.GetTrace(ctx).SubTrace(fmt.Sprintf("%s %s%s", method, c.host, path))
-	ctx = mtrace.ContextWithTrace(ctx, trace)
+	trace := mtrace.SubTrace(ctx, fmt.Sprintf("%s-%s%s", method, c.host, path))
 	defer func() { trace.Done() }()
 
 	if c == nil {

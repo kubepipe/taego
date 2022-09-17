@@ -2,11 +2,13 @@ package mtrace
 
 import (
 	"context"
-	"fmt"
 	"math/rand"
+	"sync"
 	"time"
 
 	"taego/lib/mlog"
+
+	"go.uber.org/zap"
 )
 
 func init() {
@@ -17,6 +19,8 @@ type Trace struct {
 	id        int32
 	name      string
 	startTime time.Time
+
+	sync.Once
 }
 
 func New(name string) *Trace {
@@ -28,7 +32,7 @@ func New(name string) *Trace {
 }
 
 // use the same id as parent trace
-func (t *Trace) SubTrace(name string) *Trace {
+func (t *Trace) subTrace(name string) *Trace {
 	return &Trace{
 		id:        t.id,
 		name:      name,
@@ -37,16 +41,28 @@ func (t *Trace) SubTrace(name string) *Trace {
 }
 
 // mlog.Info with trace.id
-func (t *Trace) Log(args ...any) {
-	if t.id != 0 {
-		args = append(args, fmt.Sprintf(" trace[%d] [%s]", t.id, t.name))
+func (t *Trace) Log(message string, args ...zap.Field) {
+	traces := []zap.Field{
+		zap.Int32("trace", t.id),
+		zap.String("traceName", t.name),
 	}
-	mlog.Info(args...)
+	args = append(args, traces...)
+	mlog.Info(message, args...)
 }
 
+// trace finish, caculate total time
 func (t *Trace) Done() {
-	// TODO upload metrix
-	mlog.Infof("trace[%d] [%s] time[%v]", t.id, t.name, time.Now().Sub(t.startTime))
+	t.Do(func() {
+		mlog.Info("step done",
+			zap.Int32("trace", t.id),
+			zap.String("traceName", t.name),
+			zap.String("totalTime", time.Now().Sub(t.startTime).String()),
+		)
+	})
+}
+
+func SubTrace(ctx context.Context, name string) *Trace {
+	return GetTrace(ctx).subTrace(name)
 }
 
 type traceKey struct{}
