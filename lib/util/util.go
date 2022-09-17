@@ -18,6 +18,7 @@ func GetMode() mconst.MODE {
 	return mconst.MODE(mode)
 }
 
+// TODO
 func GetTraceId(ctx context.Context) string {
 	if ctx == nil {
 		return ""

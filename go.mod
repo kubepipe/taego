@@ -6,26 +6,13 @@ require (
 	github.com/facebookgo/grace v0.0.0-20180706040059-75cf19382434
 	github.com/gin-gonic/gin v1.7.7
 	github.com/olebedev/config v0.0.0-20190528211619-364964f3a8e4
-	github.com/opentracing/basictracer-go v1.1.0
-	github.com/opentracing/opentracing-go v1.2.0
 	go.uber.org/zap v1.21.0
-	k8s.io/api v0.19.4
-	k8s.io/apimachinery v0.19.4
 	k8s.io/client-go v0.19.4
 	moul.io/http2curl v1.0.0
-	sigs.k8s.io/yaml v1.2.0
-	sourcegraph.com/sourcegraph/appdash v0.0.0-20211028080628-e2786a622600
 )
 
 require (
-	cloud.google.com/go v0.51.0 // indirect
-	github.com/Azure/go-autorest/autorest v0.9.6 // indirect
-	github.com/Azure/go-autorest/autorest/adal v0.8.2 // indirect
-	github.com/Azure/go-autorest/autorest/date v0.2.0 // indirect
-	github.com/Azure/go-autorest/logger v0.1.0 // indirect
-	github.com/Azure/go-autorest/tracing v0.5.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/facebookgo/clock v0.0.0-20150410010913-600d898af40a // indirect
 	github.com/facebookgo/ensure v0.0.0-20200202191622-63f1cf65ac4c // indirect
 	github.com/facebookgo/freeport v0.0.0-20150612182905-d4adf43b75b9 // indirect
@@ -61,7 +48,10 @@ require (
 	google.golang.org/protobuf v1.24.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
+	k8s.io/api v0.19.4 // indirect
+	k8s.io/apimachinery v0.19.4 // indirect
 	k8s.io/klog/v2 v2.2.0 // indirect
 	k8s.io/utils v0.0.0-20200729134348-d5654de09c73 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.0.1 // indirect
+	sigs.k8s.io/yaml v1.2.0 // indirect
 )

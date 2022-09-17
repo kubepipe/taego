@@ -2,18 +2,14 @@ package controller
 
 import (
 	"context"
-	"time"
 
 	"taego/lib/config"
 	"taego/lib/mlog"
+	"taego/lib/util"
 	"taego/mconst"
 
 	"github.com/gin-gonic/gin"
 )
-
-func Ok(c *gin.Context) {
-	success(c, time.Now().String())
-}
 
 func success(c *gin.Context, obj interface{}) {
 	res(c, 200, &mconst.Response{
@@ -34,7 +30,7 @@ func fail(c *gin.Context, err error) {
 func unauth(c *gin.Context) {
 	res(c, 200, &mconst.Response{
 		Code:    401,
-		Message: "认证未通过",
+		Message: "unauthorized",
 		Success: false,
 		Trace:   traceInfo(c),
 	}, nil)
@@ -54,6 +50,7 @@ func res(c *gin.Context, httpcode int, response *mconst.Response, data interface
 	c.Abort()
 }
 
+// TODO trace
 func traceInfo(c *gin.Context) *mconst.Trace {
 	if !config.OpentraceSwitch() {
 		return nil
@@ -69,8 +66,9 @@ func traceInfo(c *gin.Context) *mconst.Trace {
 	}
 
 	return &mconst.Trace{
-		Id:    traceId.(string),
-		SrcIp: c.ClientIP(),
+		Id:       traceId.(string),
+		SrcIp:    c.ClientIP(),
+		ServerIp: util.GetLocalIp(),
 	}
 }
 

@@ -9,19 +9,8 @@ type (
 	}
 
 	Trace struct {
-		Id    string `json:"id"`
-		SrcIp string `json:"srcIp"`
-	}
-)
-
-type (
-	ResOk struct {
-		Data string `json:"data,omitempty"`
-	}
-)
-
-type (
-	ResCreateTask struct {
-		VersionId int `json:"resourceVersionId"`
+		Id       string `json:"id,omitempty"`
+		SrcIp    string `json:"srcIp,omitempty"`
+		ServerIp string `json:"serverIp,omitempty"`
 	}
 )
