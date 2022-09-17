@@ -5,6 +5,7 @@ import (
 
 	"taego/lib/config"
 	"taego/lib/mlog"
+	"taego/lib/trace"
 	"taego/lib/util"
 	"taego/mconst"
 
@@ -36,20 +37,25 @@ func unauth(c *gin.Context) {
 
 func res(c *gin.Context, httpcode int, response *mconst.Response, data interface{}) {
 	c.JSON(httpcode, struct {
-		mconst.Response
+		*mconst.Response
 		Data interface{} `json:"data,omitempty"`
 	}{
-		Response: *response,
+		Response: response,
 		Data:     data,
 	})
 	if response != nil && !response.Success {
-		mlog.Info("fail response", "httpcode", httpcode, response.Message, response.Trace.Id)
+		var args = make([]interface{}, 0, 5)
+		args = []interface{}{"fail response", "httpcode", httpcode, response.Message}
+		if response.Trace != nil {
+			args = append(args, response.Trace.Id)
+		}
+		mlog.Info(args)
 	}
 	c.Abort()
 }
 
 // TODO trace
-func traceInfo(c *gin.Context) *mconst.Trace {
+func traceInfo(c *gin.Context) *trace.Trace {
 	if !config.OpentraceSwitch() {
 		return nil
 	}
@@ -63,7 +69,7 @@ func traceInfo(c *gin.Context) *mconst.Trace {
 		return nil
 	}
 
-	return &mconst.Trace{
+	return &trace.Trace{
 		Id:       traceId.(string),
 		SrcIp:    c.ClientIP(),
 		ServerIp: util.GetLocalIp(),
