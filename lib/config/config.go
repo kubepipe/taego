@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"taego/lib/util"
+
 	c "github.com/olebedev/config"
 )
 
@@ -21,8 +22,4 @@ func init() {
 	if Config, err = cfg.Get(string(mode)); err != nil {
 		log.Fatalf("get config from Config, mode=%s: %s", mode, err)
 	}
-}
-
-func OpentraceSwitch() bool {
-	return Config.UBool("opentrace.switch", true)
 }

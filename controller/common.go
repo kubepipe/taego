@@ -3,10 +3,8 @@ package controller
 import (
 	"context"
 
-	"taego/lib/config"
 	"taego/lib/mlog"
 	"taego/lib/trace"
-	"taego/lib/util"
 	"taego/mconst"
 
 	"github.com/gin-gonic/gin"
@@ -56,24 +54,8 @@ func res(c *gin.Context, httpcode int, response *mconst.Response, data interface
 
 // TODO trace
 func traceInfo(c *gin.Context) *trace.Trace {
-	if !config.OpentraceSwitch() {
-		return nil
-	}
 
-	spanC, _ := c.Value("span").(context.Context)
-	if spanC == nil {
-		return nil
-	}
-	traceId := spanC.Value("traceId")
-	if traceId == nil {
-		return nil
-	}
-
-	return &trace.Trace{
-		Id:       traceId.(string),
-		SrcIp:    c.ClientIP(),
-		ServerIp: util.GetLocalIp(),
-	}
+	return nil
 }
 
 // TODO
