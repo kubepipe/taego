@@ -1,12 +1,9 @@
 package api
 
 import (
-	"context"
 	"fmt"
 	"os"
 	"time"
-
-	"taego/lib/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -41,11 +38,8 @@ func ginLoger(param gin.LogFormatterParams) string {
 		param.Latency = param.Latency - param.Latency%time.Second
 	}
 
+	// TODO trace
 	var traceId string
-	if span, ok := param.Keys["span"]; ok {
-		spanc, _ := span.(context.Context)
-		traceId = util.GetTraceId(spanc)
-	}
 
 	return fmt.Sprintf("[GIN] %v |%s %3d %s| %13v | %15s |%s %-7s %s %#v | %s\n%s",
 		param.TimeStamp.Format("2006/01/02 - 15:04:05"),

@@ -1,7 +1,6 @@
 package util
 
 import (
-	"context"
 	"os"
 	"strconv"
 
@@ -16,19 +15,6 @@ func GetMode() mconst.MODE {
 		mode = string(mconst.MODE_DEBUG)
 	}
 	return mconst.MODE(mode)
-}
-
-// TODO
-func GetTraceId(ctx context.Context) string {
-	if ctx == nil {
-		return ""
-	}
-	obj := ctx.Value("traceId")
-	if obj == nil {
-		return ""
-	}
-	traceId, _ := obj.(string)
-	return traceId
 }
 
 func QueryInt(c *gin.Context, key string) int {

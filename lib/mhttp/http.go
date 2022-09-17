@@ -12,10 +12,6 @@ import (
 	"time"
 
 	"taego/lib/mlog"
-	"taego/lib/util"
-	"taego/mconst"
-
-	"moul.io/http2curl"
 )
 
 type Client struct {
@@ -92,8 +88,6 @@ func (c *Client) call(ctx context.Context, method, path string, header http.Head
 		c.header = make(http.Header)
 	}
 
-	start := time.Now()
-
 	req := &http.Request{
 		Proto:      "HTTP/1.1",
 		ProtoMajor: 1,
@@ -139,15 +133,6 @@ func (c *Client) call(ctx context.Context, method, path string, header http.Head
 	b, err := ioutil.ReadAll(resp.Body)
 
 	// TODO trace replace this
-	if util.GetMode() == mconst.MODE_DEBUG {
-		bb := string(b)
-		if len(bb) > 2000 {
-			bb = bb[:2000] + "......"
-		}
-		req.Body = io.NopCloser(bytes.NewReader(body))
-		curl, _ := http2curl.GetCurlCommand(req)
-		mlog.Debug(bb, time.Since(start), curl.String(), util.GetTraceId(ctx))
-	}
 
 	return resp.StatusCode, b, err
 }
