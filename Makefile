@@ -9,6 +9,7 @@ pre:
 clean:
 	rm -rf vendor
 	rm -rf bin
+	rm -rf main_test.go
 
 build:clean pre
 	GO111MODULE=on CGO_ENABLED=0 go build -o bin/server main.go
@@ -20,3 +21,7 @@ run:build
 
 test:
 	go test ./... -cover -v
+
+generate-test:build
+	gotests -w -all *
+	rm -rf main_test.go

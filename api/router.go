@@ -8,6 +8,7 @@ import (
 
 func setRoute(e *gin.Engine) {
 	e.Any("/", ctl.Ok)
+	e.GET("/health", ctl.Health)
 
 	v1 := e.Group("/api/v1", ctl.Auth)
 

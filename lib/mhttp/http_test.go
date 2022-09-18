@@ -15,13 +15,14 @@ func TestNewDefaultClient(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want *Client
 	}{
-		// TODO: Add test cases.
+		{"case0", args{host: "baidu.com"}},
+		{"case1", args{host: "baidu.com"}},
+		{"case2", args{host: "baidu.com"}},
 	}
 	for _, tt := range tests {
-		if got := NewDefaultClient(tt.args.host, tt.args.header); !reflect.DeepEqual(got, tt.want) {
-			t.Errorf("%q. NewDefaultClient() = %v, want %v", tt.name, got, tt.want)
+		if got := NewDefaultClient(tt.args.host, tt.args.header); got == nil || got.host != tt.args.host {
+			t.Errorf("%q. NewDefaultClient() = %v", tt.name, got)
 		}
 	}
 }

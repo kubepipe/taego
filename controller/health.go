@@ -1,11 +1,18 @@
 package controller
 
 import (
-	"time"
-
 	"github.com/gin-gonic/gin"
 )
 
 func Ok(c *gin.Context) {
-	success(c, time.Now().String())
+	success(c, "ok")
+}
+
+func Health(c *gin.Context) {
+	// TODO some check here
+	//if !ok {
+	//	failNot200(c, http.StatusInternalServerError, merrors.ERROR_UNHEALTHY)
+	//}
+
+	success(c, "ok")
 }

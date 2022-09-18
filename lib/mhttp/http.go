@@ -24,7 +24,7 @@ type Client struct {
 	header http.Header
 }
 
-func NewDefaultClient(host string, header http.Header) *Client {
+func NewDefaultClient(host string, defaultHeader http.Header) *Client {
 	timeout := 3 * time.Second
 
 	return &Client{
@@ -49,7 +49,7 @@ func NewDefaultClient(host string, header http.Header) *Client {
 			},
 		},
 		host:   host,
-		header: header,
+		header: defaultHeader.Clone(),
 	}
 }
 
@@ -106,7 +106,7 @@ func (c *Client) call(ctx context.Context, method, path string, header http.Head
 			Host:   c.host,
 			Path:   path,
 		},
-		Header: c.header,
+		Header: c.header.Clone(),
 	}
 
 	req.Header.Set("Host", c.host)

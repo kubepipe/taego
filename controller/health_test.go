@@ -20,3 +20,18 @@ func TestOk(t *testing.T) {
 		Ok(tt.args.c)
 	}
 }
+
+func TestHealth(t *testing.T) {
+	type args struct {
+		c *gin.Context
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		Health(tt.args.c)
+	}
+}

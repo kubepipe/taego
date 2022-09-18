@@ -143,3 +143,20 @@ func TestGetTrace(t *testing.T) {
 		}
 	}
 }
+
+func Test_failNot200(t *testing.T) {
+	type args struct {
+		c        *gin.Context
+		httpcode int
+		merr     merrors.Myerr
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		failNot200(tt.args.c, tt.args.httpcode, tt.args.merr)
+	}
+}

@@ -23,7 +23,14 @@ func success(c *gin.Context, obj any) {
 
 func fail(c *gin.Context, merr merrors.Myerr) {
 	res(c, 200, &mconst.Response{
-		Code:    merr.Code(),
+		Success: false,
+		Message: merr.Error(),
+		Trace:   traceInfo(c),
+	}, nil)
+}
+
+func failNot200(c *gin.Context, httpcode int, merr merrors.Myerr) {
+	res(c, httpcode, &mconst.Response{
 		Success: false,
 		Message: merr.Error(),
 		Trace:   traceInfo(c),
