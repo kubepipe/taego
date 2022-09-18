@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"taego/lib/merrors"
 	"taego/lib/mlog"
 	"taego/lib/mtrace"
 	"taego/lib/util"
@@ -20,10 +21,11 @@ func success(c *gin.Context, obj any) {
 	}, obj)
 }
 
-func fail(c *gin.Context, err error) {
+func fail(c *gin.Context, merr merrors.Myerr) {
 	res(c, 200, &mconst.Response{
+		Code:    merr.Code(),
 		Success: false,
-		Message: err.Error(),
+		Message: merr.Error(),
 		Trace:   traceInfo(c),
 	}, nil)
 }

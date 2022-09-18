@@ -2,6 +2,7 @@ package controller
 
 import (
 	"context"
+	"taego/lib/merrors"
 	"taego/lib/mtrace"
 	"taego/service/example"
 	"time"
@@ -17,7 +18,7 @@ func Example(c *gin.Context) {
 	req := &example.ReqExample{}
 	res, err := example.GetExampleData(GetSpan(c), req)
 	if err != nil {
-		fail(c, err)
+		fail(c, merrors.NewByError(err))
 		return
 	}
 

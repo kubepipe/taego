@@ -1,14 +1,14 @@
 debug:
   address: ":9091"
   system:
-    token: 
+    token: "xxx"
   example:
     host: "baidu.com"
 
 release:
   address: ":9091"
   system:
-    token: 
+    token: "xxx"
   example:
     host: "baidu.com"
 
