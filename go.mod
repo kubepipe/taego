@@ -8,7 +8,6 @@ require (
 	github.com/olebedev/config v0.0.0-20190528211619-364964f3a8e4
 	go.uber.org/zap v1.21.0
 	k8s.io/client-go v0.19.4
-	moul.io/http2curl v1.0.0
 )
 
 require (
@@ -34,7 +33,6 @@ require (
 	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
-	github.com/smartystreets/goconvey v1.7.2 // indirect
 	github.com/ugorji/go/codec v1.1.7 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect

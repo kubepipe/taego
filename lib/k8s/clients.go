@@ -1,8 +1,9 @@
 package mk8s
 
 import (
-	"log"
+	"taego/lib/mlog"
 
+	"go.uber.org/zap"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 )
@@ -13,12 +14,14 @@ func init() {
 	// creates the in-cluster config
 	config, err := rest.InClusterConfig()
 	if err != nil {
-		log.Fatal(err)
+		mlog.Error("load kubeconfig failed", zap.Error(err))
+		return
 	}
 	// creates the clientset
 	clientset, err = kubernetes.NewForConfig(config)
 	if err != nil {
-		log.Fatal(err)
+		mlog.Error("create k8s clientset failed", zap.Error(err))
+		return
 	}
 }
 

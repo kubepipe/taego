@@ -13,7 +13,7 @@ var (
 )
 
 func init() {
-	cfg, err := c.ParseYamlFile("etc/config.yaml")
+	cfg, err := c.ParseYamlFile("../etc/config.yaml")
 	if err != nil {
 		log.Fatalf("parse config from etc/config.yaml failed: %s", err)
 	}

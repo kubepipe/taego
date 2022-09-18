@@ -14,7 +14,9 @@ build:clean pre
 	GO111MODULE=on CGO_ENABLED=0 go build -o bin/server main.go
 
 run:build
-	MODE=release ./bin/server
+	# so why not use ./bin/server?
+	# becuase go test. The etc directory must be the parent directory
+	MODE=release cd bin && ./server
 
 test:
 	go test ./... -cover -v
