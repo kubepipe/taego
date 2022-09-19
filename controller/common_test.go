@@ -79,20 +79,6 @@ func Test_traceInfo(t *testing.T) {
 	}
 }
 
-func TestGetSpanKey(t *testing.T) {
-	tests := []struct {
-		name string
-		want string
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		if got := GetSpanKey(); got != tt.want {
-			t.Errorf("%q. GetSpanKey() = %v, want %v", tt.name, got, tt.want)
-		}
-	}
-}
-
 func TestSetSpan(t *testing.T) {
 	type args struct {
 		c *gin.Context
@@ -158,5 +144,19 @@ func Test_failNot200(t *testing.T) {
 	}
 	for _, tt := range tests {
 		failNot200(tt.args.c, tt.args.httpcode, tt.args.merr)
+	}
+}
+
+func TestGetSpanKey(t *testing.T) {
+	tests := []struct {
+		name string
+		want string
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		if got := GetSpanKey(); got != tt.want {
+			t.Errorf("%q. GetSpanKey() = %v, want %v", tt.name, got, tt.want)
+		}
 	}
 }

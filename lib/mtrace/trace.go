@@ -1,7 +1,6 @@
 package mtrace
 
 import (
-	"context"
 	"math/rand"
 	"sync"
 	"time"
@@ -12,10 +11,10 @@ import (
 )
 
 func init() {
-	rand.Seed(time.Now().Unix())
+	rand.Seed(time.Now().UnixNano())
 }
 
-type Trace struct {
+type trace struct {
 	id        int32
 	name      string
 	startTime time.Time
@@ -23,17 +22,17 @@ type Trace struct {
 	sync.Once
 }
 
-func New(name string) *Trace {
-	return &Trace{
-		id:        rand.Int31(),
+func New(name string) Trace {
+	return &trace{
+		id:        rand.Int31n(int32(1<<31-1)) + 1,
 		name:      name,
 		startTime: time.Now(),
 	}
 }
 
 // use the same id as parent trace
-func (t *Trace) subTrace(name string) *Trace {
-	return &Trace{
+func (t *trace) SubTrace(name string) Trace {
+	return &trace{
 		id:        t.id,
 		name:      name,
 		startTime: time.Now(),
@@ -41,7 +40,7 @@ func (t *Trace) subTrace(name string) *Trace {
 }
 
 // mlog.Info with trace.id
-func (t *Trace) Log(message string, args ...zap.Field) {
+func (t *trace) Log(message string, args ...zap.Field) {
 	traces := []zap.Field{
 		zap.Int32("trace", t.id),
 		zap.String("traceName", t.name),
@@ -51,7 +50,7 @@ func (t *Trace) Log(message string, args ...zap.Field) {
 }
 
 // trace finish, caculate total time
-func (t *Trace) Done() {
+func (t *trace) Done() {
 	t.Do(func() {
 		mlog.Info("step done",
 			zap.Int32("trace", t.id),
@@ -61,24 +60,6 @@ func (t *Trace) Done() {
 	})
 }
 
-func SubTrace(ctx context.Context, name string) *Trace {
-	return GetTrace(ctx).subTrace(name)
-}
-
-type traceKey struct{}
-
-func GetTrace(ctx context.Context) *Trace {
-	if v, ok := ctx.Value(traceKey{}).(*Trace); ok {
-		return v
-	}
-	// avoid panic
-	return &Trace{}
-}
-
-func GetTraceId(ctx context.Context) int32 {
-	return GetTrace(ctx).id
-}
-
-func ContextWithTrace(ctx context.Context, t *Trace) context.Context {
-	return context.WithValue(ctx, traceKey{}, t)
+func (t *trace) GetTraceId() int32 {
+	return t.id
 }

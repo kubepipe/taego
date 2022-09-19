@@ -96,6 +96,6 @@ func GetSpan(c *gin.Context) context.Context {
 	return context.Background()
 }
 
-func GetTrace(c *gin.Context) *mtrace.Trace {
+func GetTrace(c *gin.Context) mtrace.Trace {
 	return mtrace.GetTrace(GetSpan(c))
 }

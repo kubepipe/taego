@@ -1,7 +1,6 @@
 package mtrace
 
 import (
-	"context"
 	"reflect"
 	"testing"
 
@@ -15,7 +14,7 @@ func TestNew(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want *Trace
+		want Trace
 	}{
 		// TODO: Add test cases.
 	}
@@ -26,33 +25,33 @@ func TestNew(t *testing.T) {
 	}
 }
 
-func TestTrace_subTrace(t *testing.T) {
+func Test_trace_SubTrace(t *testing.T) {
 	type args struct {
 		name string
 	}
 	tests := []struct {
 		name string
-		tr   *Trace
+		tr   *trace
 		args args
-		want *Trace
+		want Trace
 	}{
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
-		if got := tt.tr.subTrace(tt.args.name); !reflect.DeepEqual(got, tt.want) {
-			t.Errorf("%q. Trace.subTrace() = %v, want %v", tt.name, got, tt.want)
+		if got := tt.tr.SubTrace(tt.args.name); !reflect.DeepEqual(got, tt.want) {
+			t.Errorf("%q. trace.SubTrace() = %v, want %v", tt.name, got, tt.want)
 		}
 	}
 }
 
-func TestTrace_Log(t *testing.T) {
+func Test_trace_Log(t *testing.T) {
 	type args struct {
 		message string
 		args    []zap.Field
 	}
 	tests := []struct {
 		name string
-		tr   *Trace
+		tr   *trace
 		args args
 	}{
 		// TODO: Add test cases.
@@ -62,10 +61,10 @@ func TestTrace_Log(t *testing.T) {
 	}
 }
 
-func TestTrace_Done(t *testing.T) {
+func Test_trace_Done(t *testing.T) {
 	tests := []struct {
 		name string
-		tr   *Trace
+		tr   *trace
 	}{
 		// TODO: Add test cases.
 	}
@@ -74,76 +73,17 @@ func TestTrace_Done(t *testing.T) {
 	}
 }
 
-func TestSubTrace(t *testing.T) {
-	type args struct {
-		ctx  context.Context
-		name string
-	}
+func Test_trace_GetTraceId(t *testing.T) {
 	tests := []struct {
 		name string
-		args args
-		want *Trace
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		if got := SubTrace(tt.args.ctx, tt.args.name); !reflect.DeepEqual(got, tt.want) {
-			t.Errorf("%q. SubTrace() = %v, want %v", tt.name, got, tt.want)
-		}
-	}
-}
-
-func TestGetTrace(t *testing.T) {
-	type args struct {
-		ctx context.Context
-	}
-	tests := []struct {
-		name string
-		args args
-		want *Trace
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		if got := GetTrace(tt.args.ctx); !reflect.DeepEqual(got, tt.want) {
-			t.Errorf("%q. GetTrace() = %v, want %v", tt.name, got, tt.want)
-		}
-	}
-}
-
-func TestGetTraceId(t *testing.T) {
-	type args struct {
-		ctx context.Context
-	}
-	tests := []struct {
-		name string
-		args args
+		tr   *trace
 		want int32
 	}{
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
-		if got := GetTraceId(tt.args.ctx); got != tt.want {
-			t.Errorf("%q. GetTraceId() = %v, want %v", tt.name, got, tt.want)
-		}
-	}
-}
-
-func TestContextWithTrace(t *testing.T) {
-	type args struct {
-		ctx context.Context
-		t   *Trace
-	}
-	tests := []struct {
-		name string
-		args args
-		want context.Context
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		if got := ContextWithTrace(tt.args.ctx, tt.args.t); !reflect.DeepEqual(got, tt.want) {
-			t.Errorf("%q. ContextWithTrace() = %v, want %v", tt.name, got, tt.want)
+		if got := tt.tr.GetTraceId(); got != tt.want {
+			t.Errorf("%q. trace.GetTraceId() = %v, want %v", tt.name, got, tt.want)
 		}
 	}
 }

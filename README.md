@@ -8,11 +8,26 @@
 
 * 日志: zap
 
-# Feature
+## 结构
+
+taego从上到下依次为：
+
+* 路由层 api：负责接口定义
+* 逻辑层 controller：负责主要业务逻辑
+* 调用层 dao/service：中间件或依赖服务的调用
+
+# Features
 
 ### trace模块
 
-trace与zap log、gin完美配合, 使每一条由gin接收的请求在链路的关键点（如http、mysql等io调用）都有日志打印, 最后将trace.id返回给客户端.
+api server的日志不加trace,不能跟请求对应起来的话,是没有意义的.
+
+trace配合zap、gin, 使每一条由gin接收的请求在链路的关键点（如http、mysql等io调用）都有日志打印, 最后将trace.id返回给客户端.
+
+在controller层的用法:
+```
+GetTrace(c).Log("this is my log")
+```
 
 使用curl模拟客户端请求：
 
@@ -45,21 +60,11 @@ trace与zap log、gin完美配合, 使每一条由gin接收的请求在链路的
 
 ### merrors模块
 
-支持自定义error，返回给客户端errcode，用于特殊场景下的错误标识.
+自定义error，返回给客户端errcode，用于特殊场景下的错误标识.
 
-### 设计哲学
+### context.Context
 
-#### 结构
-
-微服务场景下各模块职责单一，要避免单个模块过度分层导致的开发、维护成本上升，因此taego从上到下依次为：
-
-* 路由层 api：负责接口定义
-* 逻辑层 controller：负责主要业务逻辑
-* 调用层 dao/service：中间件或依赖服务的调用
-
-#### orm
-
-拒绝orm,支持手撸sql （别问, 问就是我不喜欢）
+从gin接收到请求开始,trace,userinfo等元数据存放在Context中贯穿整个链路.
 
 # Directory
 
