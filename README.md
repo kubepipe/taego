@@ -103,68 +103,77 @@ fail(c, merrors.Get(merrors.ERROR_UNAUTHORIZED))
 
 从gin接收到请求开始,trace,user等元数据存放在Context中贯穿整个链路,通常作为第一个参数.
 
-# Quick start
+# Document
 
 [快速开始](docs/quick-start.md)
 
 # Directory
 
-tree -I vendor
 ```
+➜  taego git:(master) ✗ tree -I vendor -L 2
 .
 ├── Makefile
 ├── README.md
 ├── api
+│   ├── README.md
 │   ├── router.go
-│   └── server.go
+│   ├── router_test.go
+│   ├── server.go
+│   └── server_test.go
 ├── bin
 │   └── server
 ├── controller
+│   ├── README.md
 │   ├── auth.go
+│   ├── auth_test.go
 │   ├── common.go
-│   └── example.go
+│   ├── common_test.go
+│   ├── example.go
+│   ├── example_test.go
+│   ├── health.go
+│   └── health_test.go
 ├── dao
+│   └── README.md
+├── docs
+│   └── quick-start.md
 ├── etc
+│   ├── README.md
 │   └── config.yaml
 ├── go.mod
 ├── go.sum
 ├── lib
+│   ├── README.md
 │   ├── config
-│   │   └── config.go
 │   ├── k8s
-│   │   └── clients.go
+│   ├── merrors
 │   ├── mhttp
-│   │   └── http.go
 │   ├── mlog
-│   │   └── log.go
-│   ├── trace
-│   │   └── trace.go
+│   ├── mtrace
 │   ├── util
-│   │   └── util.go
 │   └── watcher
-│       └── watcher.go
 ├── license
 ├── main.go
 ├── mconst
+│   ├── README.md
 │   ├── const.go
-│   ├── errors.go
 │   ├── request.go
-│   └── response.go
+│   ├── response.go
+│   └── user.go
 └── service
+    ├── README.md
     └── example
-        └── example.go
 
-16 directories, 25 files
+18 directories, 32 files
 ```
 
-* main.go 入口函数
-* api server启动、路由
-* controller 主要业务逻辑
-* bin 编译后的可执行文件
-* etc 配置文件
-* mconst 全局常量、变量定义
-* dao 数据增删改查
-* lib 对基础依赖的封装,如http、mysql、k8s、log
+* main.go: 入口函数
+* api: server启动、路由
+* bin: 编译后的可执行文件
+* controller: 主要业务逻辑
+* dao: 数据访问
+* etc: 配置文件
+* lib: 对基础依赖的封装,如http、mysql、k8s、log、trace
+* mconst: 全局常量、变量定义
 * service 第三方依赖服务调用
 
 # Roadmap 
