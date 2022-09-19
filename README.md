@@ -38,7 +38,6 @@ GetTrace(c).Log("this is my log")
 100   231  100   231    0     0  11584      0 --:--:-- --:--:-- --:--:-- 16500
 {
   "errcode": 0,
-  "success": true,
   "trace": {
     "id": 590419775,
     "sourceIp": "127.0.0.1",
@@ -92,7 +91,6 @@ fail(c, merrors.Get(merrors.ERROR_UNAUTHORIZED))
 {
   "errcode": 10000,
   "message": "unauthorized",
-  "success": false,
   "trace": {
     "id": 2005758541,
     "sourceIp": "127.0.0.1",

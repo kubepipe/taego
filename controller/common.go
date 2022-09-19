@@ -16,15 +16,13 @@ import (
 
 func success(c *gin.Context, obj any) {
 	res(c, 200, &mconst.Response{
-		Success: true,
-		Trace:   traceInfo(c),
+		Trace: traceInfo(c),
 	}, obj)
 }
 
 func fail(c *gin.Context, merr merrors.Merr) {
 	res(c, 200, &mconst.Response{
 		ErrCode: merr.Code(),
-		Success: false,
 		Message: merr.Error(),
 		Trace:   traceInfo(c),
 	}, nil)
@@ -33,7 +31,6 @@ func fail(c *gin.Context, merr merrors.Merr) {
 func failNot200(c *gin.Context, httpcode int, merr merrors.Merr) {
 	res(c, httpcode, &mconst.Response{
 		ErrCode: merr.Code(),
-		Success: false,
 		Message: merr.Error(),
 		Trace:   traceInfo(c),
 	}, nil)
@@ -47,10 +44,11 @@ func res(c *gin.Context, httpcode int, response *mconst.Response, data any) {
 		Response: response,
 		Data:     data,
 	})
-	if response != nil && !response.Success {
+	if response != nil && response.ErrCode != 0 {
 		mlog.Info("fail response",
 			zap.Int("httpcode", httpcode),
 			zap.String("message", response.Message),
+			zap.Int("errcode", response.ErrCode),
 			zap.Int32("trace", response.Trace.Id),
 		)
 	}

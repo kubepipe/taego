@@ -49,7 +49,72 @@ taego默认监听端口为9091，可通过etc/config.yaml修改address字段。
 
 ## 写一个demo
 
-假设接口路径为`/demo`,接口返回一个简单字符串`demo`
+假设接口路径为`/demo`，get方法，接口返回一个简单字符串`demo`
 
 首先在路由层定义http方法、接口路径以及处理函数
+
+在api/router.go中增加如下代码：
+
+```go
+package api
+
+import (
+	ctl "taego/controller"
+
+	"github.com/gin-gonic/gin"
+)
+
+func setRoute(e *gin.Engine) {
+	e.Any("/", ctl.Ok)
+	e.GET("/health", ctl.Health)
+
+	e.GET("/demo", ctl.Demo)
+
+	v1 := e.Group("/api/v1", ctl.Auth)
+
+	v1.GET("/example", ctl.Example)
+}
+```
+
+其中`e.GET("/demo", ctl.Demo)`是新增的demo接口
+
+接下来创建一个controller/demo.go文件，并在文件中加入以下代码：
+
+```go
+package controller
+
+import "github.com/gin-gonic/gin"
+
+func Demo(c *gin.Context) {
+	success(c, "demo")
+}
+```
+
+到这里demo接口就写完了,然后访问一下看看效果：
+
+运行`make run`来启动api server
+
+使用浏览器访问`http://127.0.0.1/demo`
+
+返回如下结果：
+
+```
+{
+  "errcode": 0,
+  "trace": {
+    "id": 657218595,
+    "sourceIp": "127.0.0.1",
+    "serverIp": "192.168.31.29"
+  },
+  "data": "demo"
+}
+```
+
+响应中的data字段就是controller/demo.go返回的内容，而其余字段各含义如下：
+
+* errcode: 错误码，返回0表示正常状态。用于特殊场景下返回指定错误，例如当errcode=10000时表示未登录，需要跳转到登录页面
+* trace: 当前请求的唯一标识，根据trace.id查询日志，可用于debug，统计请求耗时，标记某个指定步骤的耗时，串联一次请求输出的日志
+* data: controller方法的输出会放在data中返回给客户端
+
+
 
