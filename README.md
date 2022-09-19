@@ -125,7 +125,7 @@ tree -I vendor
 
 https://github.com/orgs/kubepipe/projects/1
 
-# license
+# License
 
 MIT
 
