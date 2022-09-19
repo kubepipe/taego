@@ -11,7 +11,7 @@ func Ok(c *gin.Context) {
 func Health(c *gin.Context) {
 	// TODO some check here
 	//if !ok {
-	//	failNot200(c, http.StatusInternalServerError, merrors.ERROR_UNHEALTHY)
+	//	failNot200(c, http.StatusInternalServerError, merrors.Get(merrors.ERROR_UNHEALTHY))
 	//}
 
 	success(c, "ok")

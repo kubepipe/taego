@@ -18,7 +18,7 @@ func Example(c *gin.Context) {
 	req := &example.ReqExample{}
 	res, err := example.GetExampleData(GetSpan(c), req)
 	if err != nil {
-		fail(c, merrors.NewByError(err))
+		fail(c, merrors.New(err))
 		return
 	}
 

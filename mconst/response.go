@@ -2,6 +2,7 @@ package mconst
 
 type (
 	Response struct {
+		ErrCode int        `json:"errcode"`
 		Message string     `json:"message,omitempty"`
 		Success bool       `json:"success"`
 		Trace   *TraceInfo `json:"trace,omitempty"`

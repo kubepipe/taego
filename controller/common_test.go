@@ -30,7 +30,7 @@ func Test_success(t *testing.T) {
 func Test_fail(t *testing.T) {
 	type args struct {
 		c    *gin.Context
-		merr merrors.Myerr
+		merr merrors.Merr
 	}
 	tests := []struct {
 		name string
@@ -148,7 +148,7 @@ func Test_failNot200(t *testing.T) {
 	type args struct {
 		c        *gin.Context
 		httpcode int
-		merr     merrors.Myerr
+		merr     merrors.Merr
 	}
 	tests := []struct {
 		name string

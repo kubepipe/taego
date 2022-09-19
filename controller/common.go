@@ -21,16 +21,18 @@ func success(c *gin.Context, obj any) {
 	}, obj)
 }
 
-func fail(c *gin.Context, merr merrors.Myerr) {
+func fail(c *gin.Context, merr merrors.Merr) {
 	res(c, 200, &mconst.Response{
+		ErrCode: merr.Code(),
 		Success: false,
 		Message: merr.Error(),
 		Trace:   traceInfo(c),
 	}, nil)
 }
 
-func failNot200(c *gin.Context, httpcode int, merr merrors.Myerr) {
+func failNot200(c *gin.Context, httpcode int, merr merrors.Merr) {
 	res(c, httpcode, &mconst.Response{
+		ErrCode: merr.Code(),
 		Success: false,
 		Message: merr.Error(),
 		Trace:   traceInfo(c),

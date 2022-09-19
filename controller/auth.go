@@ -13,7 +13,7 @@ import (
 func Auth(c *gin.Context) {
 	token := c.Request.Header.Get("system-token")
 	if token != config.Config.UString("system.token", "") {
-		fail(c, merrors.ERROR_UNAUTHORIZED)
+		fail(c, merrors.Get(merrors.ERROR_UNAUTHORIZED))
 		return
 	}
 
