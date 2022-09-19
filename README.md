@@ -1,6 +1,6 @@
 # Introduction
 
-一个轻量的golang apiserver脚手架, 在不引入复杂性（学习成本）的前提下保证功能性.
+taego【泰戈】,一个轻量的golang apiserver脚手架, 在不引入复杂性（学习成本）的前提下保证功能性.
 
 主要使用到的第三方开源工具:
 
@@ -62,9 +62,52 @@ GetTrace(c).Log("this is my log")
 
 自定义error，返回给客户端errcode，用于特殊场景下的错误标识.
 
+lib/merrors中定义：
+
+```go
+const (
+	ERROR_UNAUTHORIZED Code = iota + 10000
+	ERROR_UNHEALTHY
+	// TODO add new error code here
+
+)
+
+var errmap = map[string]Code{
+	// TODO add new error descriptions here
+
+	"unauthorized": ERROR_UNAUTHORIZED,
+	"unhealthy":    ERROR_UNHEALTHY,
+}
+```
+
+controller中使用:
+
+```go
+fail(c, merrors.Get(merrors.ERROR_UNAUTHORIZED))
+```
+
+响应预览：
+
+```bash
+{
+  "errcode": 10000,
+  "message": "unauthorized",
+  "success": false,
+  "trace": {
+    "id": 2005758541,
+    "sourceIp": "127.0.0.1",
+    "serverIp": "192.168.31.29"
+  }
+}
+```
+
 ### context.Context
 
-从gin接收到请求开始,trace,userinfo等元数据存放在Context中贯穿整个链路.
+从gin接收到请求开始,trace,user等元数据存放在Context中贯穿整个链路,通常作为第一个参数.
+
+# Quick start
+
+[快速开始](docs/quick-start.md)
 
 # Directory
 

@@ -12,7 +12,7 @@ clean:
 	rm -rf main_test.go
 
 build:clean pre
-	GO111MODULE=on CGO_ENABLED=0 go build -o bin/server main.go
+	GOPROXY=https://goproxy.cn,direct GO111MODULE=on CGO_ENABLED=0 go build -o bin/server main.go
 
 run:build
 	# so why not use ./bin/server?
