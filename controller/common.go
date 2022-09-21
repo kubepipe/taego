@@ -73,13 +73,14 @@ func GetSpanKey() string {
 }
 
 func SetSpan(c *gin.Context) {
-	span := context.Background()
+	span, cancel := context.WithCancel(c.Request.Context())
+	defer cancel()
 
 	// trace
 	name := fmt.Sprintf("%s-%s%s",
 		c.Request.Method, c.Request.Host, c.Request.RequestURI)
 	trace := mtrace.New(name)
-	defer func() { trace.Done() }()
+	defer trace.Done()
 
 	span = mtrace.ContextWithTrace(span, trace)
 	c.Set(spanKey, span)
