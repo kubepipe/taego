@@ -101,7 +101,11 @@ fail(c, merrors.Get(merrors.ERROR_UNAUTHORIZED))
 
 ### context.Context
 
-从gin接收到请求开始,trace,user等元数据存放在Context中贯穿整个链路,通常作为第一个参数.
+gin结构体封装的http.Request包含一个Context，可用于客户端连接关闭时的通知.
+
+taego使用request.Context()生成一个span context，贯穿一个请求的整个生命周期.
+
+trace,user等元数据存放在span context中贯穿整个链路,当客户端请求关闭时,请求创建的goroutine都会得到通知,通常作为函数第一个参数.
 
 # Document
 
