@@ -33,6 +33,15 @@ func demohandle(ctx context.Context) {
 	trace := mtrace.SubTrace(ctx, "demohandle")
 	defer func() { trace.Done() }()
 
-	trace.Log("i am doing some curd")
-	time.Sleep(time.Microsecond * 10)
+	for {
+		select {
+		case <-ctx.Done():
+			// you can close client connection and test the result here
+			trace.Log("context done")
+			return
+		case <-time.After(time.Second * 2):
+			trace.Log("after second")
+			return
+		}
+	}
 }

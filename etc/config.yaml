@@ -2,6 +2,9 @@ debug:
   address: ":9091"
   system:
     token:
+  mysql:
+    # user:password@/dbname
+    address: "root:@/mydbname" 
   example:
     host: "baidu.com"
 
@@ -9,6 +12,9 @@ release:
   address: ":9091"
   system:
     token: 
+  mysql:
+    # user:password@/dbname
+    address: "root:@/mydbname"
   example:
     host: "baidu.com"
 

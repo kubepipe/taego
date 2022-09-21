@@ -1,6 +1,13 @@
 package controller
 
 import (
+	"net/http"
+	"time"
+
+	"taego/lib/merrors"
+	"taego/lib/mmysql"
+	"taego/lib/util"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -10,9 +17,15 @@ func Ok(c *gin.Context) {
 
 func Health(c *gin.Context) {
 	// TODO some check here
-	//if !ok {
-	//	failNot200(c, http.StatusInternalServerError, merrors.Get(merrors.ERROR_UNHEALTHY))
-	//}
+
+	// check db
+	checkDB := func() error {
+		return mmysql.Ping()
+	}
+	if err := util.RetryUntilSuccess(checkDB, 3, time.Millisecond*100); err != nil {
+		failNot200(c, http.StatusInternalServerError, merrors.New(err))
+		return
+	}
 
 	success(c, "ok")
 }
