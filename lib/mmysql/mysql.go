@@ -26,6 +26,10 @@ func Ping() error {
 	return db.Ping()
 }
 
+func Close() error {
+	return db.Close()
+}
+
 //func Demo() {
 //	conn, err := db.Conn(context.Background())
 //	if err != nil {
