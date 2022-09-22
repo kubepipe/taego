@@ -109,6 +109,8 @@ trace,user等元数据存放在span context中贯穿整个链路，当客户端�
 
 ### mmysql
 
+TODO 进行中
+
 mmysql模块是对mysql sdk的封装，使用go-sql-driver驱动.
 
 为什么不用orm，主要考虑到学习成本以及性能损耗，sql是操作数据库的规范，但orm不是，每个orm框架都有自己的规范，且orm大多使用反射，这会带来性能上的损耗.
