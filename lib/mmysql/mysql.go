@@ -30,6 +30,11 @@ func Close() error {
 	return db.Close()
 }
 
+// DBStats
+func Stats() sql.DBStats {
+	return db.Stats()
+}
+
 //func Demo() {
 //	conn, err := db.Conn(context.Background())
 //	if err != nil {

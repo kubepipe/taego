@@ -105,7 +105,15 @@ gin结构体封装的http.Request包含一个Context，可用于客户端连接�
 
 taego使用request.Context()生成一个span context，贯穿一个请求的整个生命周期.
 
-trace,user等元数据存放在span context中贯穿整个链路,当客户端请求关闭时,请求创建的goroutine都会得到通知,通常作为函数第一个参数.
+trace,user等元数据存放在span context中贯穿整个链路，当客户端请求关闭时，请求创建的goroutine都会得到通知，通常作为函数第一个参数.
+
+### mmysql
+
+mmysql模块是对mysql sdk的封装，使用go-sql-driver驱动.
+
+为什么不用orm，主要考虑到学习成本以及性能损耗，sql是操作数据库的规范，但orm不是，每个orm框架都有自己的规范，且orm大多使用反射，这会带来性能上的损耗.
+
+taego主张使用原生sql，完全由原生sql控制数据库的增删改查以及索引优化等，另外学习zap通过指定数据类型的方式代替反射.
 
 # Document
 
