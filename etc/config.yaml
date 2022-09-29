@@ -3,8 +3,9 @@ debug:
   system:
     token:
   mysql:
-    # user:password@/dbname
-    address: "root:@/mydbname" 
+    demo:
+      # user:password@/dbname
+      address: "root:@/demo" 
   example:
     host: "baidu.com"
 
@@ -13,8 +14,9 @@ release:
   system:
     token: 
   mysql:
-    # user:password@/dbname
-    address: "root:@/mydbname"
+    demo:
+      # user:password@/dbname
+      address: "root:@/demo" 
   example:
     host: "baidu.com"
 

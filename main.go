@@ -7,7 +7,6 @@ import (
 	"taego/api"
 	"taego/lib/config"
 	"taego/lib/mlog"
-	"taego/lib/mmysql"
 
 	"github.com/facebookgo/grace/gracehttp"
 	"go.uber.org/zap"
@@ -32,7 +31,8 @@ func main() {
 		mlog.Fatal(err.Error())
 	}
 
-	if err := mmysql.Close(); err != nil {
-		mlog.Errorf("mmysql.Close %v", err)
-	}
+	//TODO
+	//if err := mmysql.Close(); err != nil {
+	//	mlog.Errorf("mmysql.Close %v", err)
+	//}
 }
