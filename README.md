@@ -13,7 +13,7 @@ taego【泰戈】,一个轻量的golang apiserver脚手架, 在不引入复杂�
 taego从上到下依次为：
 
 * 路由层 api：负责接口定义
-* 逻辑层 controller：负责主要业务逻辑
+* 逻辑层 controller：负责主要业务逻辑，lib库封装的各模块，以及dao/service通常在controller中使用
 * 调用层 dao/service：中间件或依赖服务的调用
 
 # Features
@@ -48,9 +48,44 @@ sql是操作数据库的规范，但orm不是，每个orm框架都有自己的�
 
 orm通过将高级语言翻译成sql，提高开发效率，但同时引入性能损耗.
 
-taego主张在orm思想的基础上使用原生sql，完全由原生sql控制数据库的增删改查以及索引优化等.
+taego主张完全由原生sql控制数据库的增删改查以及索引优化等，另外考虑到使用golang的原生database/sql包在执行批量查询时，代码过于繁琐，因此封装msql模块旨在提高开发效率，兼顾执行效率，又不引入学习成本.
 
-另外考虑到使用golang的原生database/sql包在执行批量查询时，代码过于繁琐，因此封装msql模块旨在提高开发效率，同时兼顾执行效率，又不引入学习成本.
+使用示例：
+
+首先初始化数据库连接：
+
+```
+var user msql.SQL
+
+func init() {
+	user = msql.NewSQL("user:password@/dbname")
+}
+```
+
+定义一个struct表示表结构，其中每个字段的db tag表示对应表的字段名：
+
+```
+type User struct {
+	Id   int64  `json:"id" db:"id"`
+	Name string `json:"name" db:"name"`
+}
+```
+
+select 使用SQL.Query方法，将结果存入目标变量中：
+
+```
+us := []*User{}
+_ = user.Query(ctx, "select * from user limit 10").Scan(&us)
+```
+
+update / delete / insert 使用SQL.Exec方法：
+
+```
+id := 1
+if _, err := user.Exec(ctx, "delete from user where id=?", id); err != nil {
+	return err
+}
+```
 
 ### context.Context
 
@@ -63,6 +98,16 @@ trace,user等元数据存放在span context中贯穿整个链路，当客户端�
 # Document
 
 [快速开始](docs/quick-start.md)
+
+[数据库操作 lib/msql](lib/msql/README.md)
+
+[trace模块 lib/mtrace](lib/mtrace/README.md)
+
+[自定义error lib/merrors](lib/merrors/README.md)
+
+[http模块 lib/mhttp](lib/mhttp/README.md)
+
+[控制器模块 controller](controller/README.md)
 
 # Directory
 
@@ -132,10 +177,6 @@ trace,user等元数据存放在span context中贯穿整个链路，当客户端�
 * lib: 对基础依赖的封装,如http、mysql、k8s、log、trace
 * mconst: 全局常量、变量定义
 * service 第三方依赖服务调用
-
-# Roadmap 
-
-https://github.com/orgs/kubepipe/projects/1
 
 # License
 
