@@ -3,26 +3,22 @@ package morm
 import (
 	"context"
 	"database/sql"
+	"sync"
+	"time"
 
 	"taego/lib/mlog"
 	"taego/lib/mtrace"
 
+	_ "github.com/go-sql-driver/mysql"
 	"go.uber.org/zap"
 )
-
-type ORM interface {
-	Query(context.Context, string, ...any) Rows
-	Exec(context.Context, string, ...any) (sql.Result, error)
-
-	Close() error
-}
 
 type morm struct {
 	db *sql.DB
 }
 
-func GetORM(t Table) ORM {
-	db, err := initdb(t.GetDBName())
+func NewORM(dataSourceName string) ORM {
+	db, err := initdb(dataSourceName)
 	if err != nil {
 		mlog.Errorf("GetORM err:%v", err)
 	}
@@ -62,4 +58,32 @@ func (m *morm) Exec(ctx context.Context, query string, args ...any) (sql.Result,
 
 func (m *morm) Close() error {
 	return m.db.Close()
+}
+
+var (
+	dbs = make(map[string]*sql.DB)
+	mu  sync.RWMutex
+)
+
+func initdb(dataSourceName string) (*sql.DB, error) {
+	mu.RLock()
+	db, ok := dbs[dataSourceName]
+	mu.RUnlock()
+	if ok {
+		return db, nil
+	}
+
+	db, err := sql.Open("mysql", dataSourceName)
+	if err != nil {
+		return nil, err
+	}
+	db.SetMaxOpenConns(10)
+	db.SetMaxIdleConns(10)
+	db.SetConnMaxIdleTime(time.Minute * 3)
+
+	mu.Lock()
+	defer mu.Unlock()
+	dbs[dataSourceName] = db
+	go db.Ping()
+	return db, nil
 }

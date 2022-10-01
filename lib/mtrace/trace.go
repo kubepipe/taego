@@ -50,13 +50,14 @@ func (t *trace) Log(message string, args ...zap.Field) {
 }
 
 // trace finish, caculate total time
-func (t *trace) Done() {
+func (t *trace) Done(args ...zap.Field) {
 	t.Do(func() {
-		mlog.Info("step done",
+		args = append(args,
 			zap.Int32("trace", t.id),
 			zap.String("traceName", t.name),
 			zap.String("totalTime", time.Now().Sub(t.startTime).String()),
 		)
+		mlog.Info("step done", args...)
 	})
 }
 

@@ -1,16 +1,15 @@
 package dao
 
+import (
+	"context"
+
+	"taego/lib/config"
+	"taego/lib/morm"
+)
+
 /*
 create database demo;
-*/
 
-type demodb struct{}
-
-func (d demodb) GetDBName() string {
-	return "demo"
-}
-
-/*
 USE demo;
 
 CREATE TABLE `user` (
@@ -20,8 +19,20 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 */
 
+var user morm.ORM
+
+func init() {
+	dataSourceName := config.Config.UString("mysql.demo.address")
+	user = morm.NewORM(dataSourceName)
+}
+
 type User struct {
-	demodb
 	Id   int64  `json:"id" db:"id"` // db:"id" means table user have id fields
 	Name string `json:"name" db:"name"`
+}
+
+// example
+func GetUserNames(ctx context.Context) (names []string) {
+	_ = user.Query(ctx, "select name from user limit 10").Scan(&names)
+	return
 }

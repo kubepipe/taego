@@ -5,7 +5,6 @@ type Code int
 const (
 	ERROR_UNAUTHORIZED Code = iota + 10000
 	ERROR_UNHEALTHY
-	ERROR_MSQL_SCAN_PAREM
 
 	// TODO add new error code here
 
@@ -16,7 +15,6 @@ var errmap = map[string]Code{
 
 	"unauthorized": ERROR_UNAUTHORIZED,
 	"unhealthy":    ERROR_UNHEALTHY,
-	"The orm.Scan function parameter Table in the msql package should be struct slice or struct pointer type": ERROR_MSQL_SCAN_PAREM,
 }
 
 var codemap map[Code]string
