@@ -1,4 +1,4 @@
-package morm
+package msql
 
 type Rows interface {
 	Close() error

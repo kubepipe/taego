@@ -26,78 +26,31 @@ trace配合zap、gin, 使每一条由gin接收的请求在链路的关键点（�
 
 在controller层的用法:
 ```
-GetTrace(c).Log("this is my log")
+GetTrace(c).Log("some other things to do")
 ```
 
-使用curl模拟客户端请求：
-
-```bash
-➜  ~ curl 127.0.0.1:9091/api/v1/example | jq
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100   231  100   231    0     0  11584      0 --:--:-- --:--:-- --:--:-- 16500
-{
-  "errcode": 0,
-  "trace": {
-    "id": 590419775,
-    "sourceIp": "127.0.0.1",
-    "serverIp": "192.168.31.29"
-  },
-  "data": "<html>\n<meta http-equiv=\"refresh\" content=\"0;url=http://www.baidu.com/\">\n</html>\n"
-}
-```
-
-日志如下：
+日志示例如下：
 
 ```
-{"level":"info","ts":1663552664.8669891,"caller":"mtrace/trace.go:50","msg":"i am doing some curd","trace":590419775,"traceName":"demohandle"}
-{"level":"info","ts":1663552664.8670452,"caller":"mtrace/trace.go:56","msg":"step done","trace":590419775,"traceName":"demohandle","totalTime":"55.958µs"}
-{"level":"info","ts":1663552664.8808,"caller":"mtrace/trace.go:56","msg":"step done","trace":590419775,"traceName":"GET-baidu.com/","totalTime":"13.737666ms"}
-{"level":"info","ts":1663552664.880825,"caller":"mtrace/trace.go:50","msg":"some other things to do","trace":590419775,"traceName":"GET-127.0.0.1:9091/api/v1/example"}
-{"level":"info","ts":1663552664.880856,"caller":"mtrace/trace.go:56","msg":"step done","trace":590419775,"traceName":"GET-127.0.0.1:9091/api/v1/example","totalTime":"13.887958ms"}
+{"level":"info","ts":1664612799.451587,"caller":"mtrace/trace.go:60","msg":"step done","queryNum":2,"trace":1562664607,"traceName":"select name from user limit 10","totalTime":"452.25µs"}
+{"level":"info","ts":1664612799.502675,"caller":"mtrace/trace.go:60","msg":"step done","trace":1562664607,"traceName":"GET-baidu.com/","totalTime":"50.958458ms"}
+{"level":"info","ts":1664612799.502698,"caller":"mtrace/trace.go:49","msg":"some other things to do","trace":1562664607,"traceName":"GET-127.0.0.1:9091/api/v1/example"}
+{"level":"info","ts":1664612799.502883,"caller":"mtrace/trace.go:60","msg":"step done","trace":1562664607,"traceName":"GET-127.0.0.1:9091/api/v1/example","totalTime":"51.758833ms"}
 ```
 
-### merrors模块
+### msql
 
-自定义error，返回给客户端errcode，用于特殊场景下的错误标识.
+msql模块是对database/sql的封装.
 
-lib/merrors中定义：
+sql还是orm?
 
-```go
-const (
-	ERROR_UNAUTHORIZED Code = iota + 10000
-	ERROR_UNHEALTHY
-	// TODO add new error code here
+sql是操作数据库的规范，但orm不是，每个orm框架都有自己的规范;
 
-)
+orm通过将高级语言翻译成sql，提高开发效率，但同时引入性能损耗.
 
-var errmap = map[string]Code{
-	// TODO add new error descriptions here
+taego主张在orm思想的基础上使用原生sql，完全由原生sql控制数据库的增删改查以及索引优化等.
 
-	"unauthorized": ERROR_UNAUTHORIZED,
-	"unhealthy":    ERROR_UNHEALTHY,
-}
-```
-
-controller中使用:
-
-```go
-fail(c, merrors.Get(merrors.ERROR_UNAUTHORIZED))
-```
-
-响应预览：
-
-```bash
-{
-  "errcode": 10000,
-  "message": "unauthorized",
-  "trace": {
-    "id": 2005758541,
-    "sourceIp": "127.0.0.1",
-    "serverIp": "192.168.31.29"
-  }
-}
-```
+另外考虑到使用golang的原生database/sql包在执行批量查询时，代码过于繁琐，因此封装msql模块旨在提高开发效率，同时兼顾执行效率，又不引入学习成本.
 
 ### context.Context
 
@@ -106,16 +59,6 @@ gin结构体封装的http.Request包含一个Context，可用于客户端连接�
 taego使用request.Context()生成一个span context，贯穿一个请求的整个生命周期.
 
 trace,user等元数据存放在span context中贯穿整个链路，当客户端请求关闭时，请求创建的goroutine都会得到通知，通常作为函数第一个参数.
-
-### mmysql
-
-TODO 进行中
-
-mmysql模块是对mysql sdk的封装，使用go-sql-driver驱动.
-
-为什么不用orm？主要考虑到学习成本，sql是操作数据库的规范，但orm不是，每个orm框架都有自己的规范.
-
-但是orm可以提高开发效率，因此taego在orm思想的基础上主张使用原生sql，完全由原生sql控制数据库的增删改查以及索引优化等. 
 
 # Document
 

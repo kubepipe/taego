@@ -1,4 +1,4 @@
-package morm
+package msql
 
 import (
 	"database/sql"
@@ -35,7 +35,7 @@ func (mrows *mrows) Scan(t any) error {
 
 	reflectValue := reflect.ValueOf(t)
 	if reflectValue.Kind() != reflect.Pointer {
-		return errors.New("The orm.Scan function parameter Table in the msql package should be a pointer")
+		return errors.New("The sql.Scan function parameter Table in the msql package should be a pointer")
 	}
 	reflectValue = reflectValue.Elem()
 

@@ -1,4 +1,4 @@
-package morm
+package msql
 
 import (
 	"context"
@@ -13,21 +13,21 @@ import (
 	"go.uber.org/zap"
 )
 
-type morm struct {
+type msql struct {
 	db *sql.DB
 }
 
-func NewORM(dataSourceName string) ORM {
+func NewSQL(dataSourceName string) SQL {
 	db, err := initdb(dataSourceName)
 	if err != nil {
-		mlog.Errorf("GetORM err:%v", err)
+		mlog.Errorf("GetSQL err:%v", err)
 	}
-	return &morm{
+	return &msql{
 		db: db,
 	}
 }
 
-func (m *morm) Query(ctx context.Context, query string, args ...any) Rows {
+func (m *msql) Query(ctx context.Context, query string, args ...any) Rows {
 	mrows := &mrows{}
 
 	trace := mtrace.SubTrace(ctx, query)
@@ -49,14 +49,14 @@ func (m *morm) Query(ctx context.Context, query string, args ...any) Rows {
 	return mrows
 }
 
-func (m *morm) Exec(ctx context.Context, query string, args ...any) (sql.Result, error) {
+func (m *msql) Exec(ctx context.Context, query string, args ...any) (sql.Result, error) {
 	trace := mtrace.SubTrace(ctx, query)
 	defer trace.Done()
 
 	return m.db.ExecContext(ctx, query, args...)
 }
 
-func (m *morm) Close() error {
+func (m *msql) Close() error {
 	return m.db.Close()
 }
 

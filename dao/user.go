@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"taego/lib/config"
-	"taego/lib/morm"
+	"taego/lib/msql"
 )
 
 /*
@@ -19,11 +19,11 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 */
 
-var user morm.ORM
+var user msql.SQL
 
 func init() {
 	dataSourceName := config.Config.UString("mysql.demo.address")
-	user = morm.NewORM(dataSourceName)
+	user = msql.NewSQL(dataSourceName)
 }
 
 type User struct {
