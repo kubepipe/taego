@@ -14,6 +14,10 @@ import (
 	"go.uber.org/zap"
 )
 
+func Ok(c *gin.Context) {
+	success(c, "ok")
+}
+
 func success(c *gin.Context, obj any) {
 	res(c, 200, &mconst.Response{
 		Trace: traceInfo(c),

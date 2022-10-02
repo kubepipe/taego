@@ -1,8 +1,6 @@
 package dao
 
 import (
-	"context"
-
 	"taego/lib/config"
 	"taego/lib/msql"
 )
@@ -29,10 +27,4 @@ func init() {
 type User struct {
 	Id   int64  `json:"id" db:"id"` // db:"id" means table user have id fields
 	Name string `json:"name" db:"name"`
-}
-
-// example
-func GetUserNames(ctx context.Context) (names []string) {
-	_ = user.Query(ctx, "select name from user limit 10").Scan(&names)
-	return
 }
