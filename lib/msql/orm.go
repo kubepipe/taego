@@ -56,8 +56,19 @@ func (m *msql) Exec(ctx context.Context, query string, args ...any) (sql.Result,
 	return m.db.ExecContext(ctx, query, args...)
 }
 
-func (m *msql) Close() error {
-	return m.db.Close()
+func (m *msql) Close() (err error) {
+	mu.Lock()
+	defer mu.Unlock()
+
+	for dsn, dbPointer := range dbs {
+		if dbPointer == m.db {
+			mlog.Infof("delete %s", dsn)
+			err = m.db.Close()
+			delete(dbs, dsn)
+			break
+		}
+	}
+	return
 }
 
 var (
