@@ -52,8 +52,8 @@ taego利用gin路由框架，在请求开始时生成一个trace对象，存放�
 api/server.go:
 
 ```go
-	e := gin.New()
-	e.Use(ctl.SetSpan)
+e := gin.New()
+e.Use(ctl.SetSpan)
 ```
 
 SetSpan在controller层的公共方法中:
@@ -85,7 +85,7 @@ func SetSpan(c *gin.Context) {
 taego的数据库访问msql包、http调用mhttp包都默认加上了trace标识，以mhttp为例：
 
 ```go
-	trace := mtrace.SubTrace(ctx, fmt.Sprintf("%s-%s%s", method, c.host, path))
-	defer trace.Done()
+trace := mtrace.SubTrace(ctx, fmt.Sprintf("%s-%s%s", method, c.host, path))
+defer trace.Done()
 ```
 
