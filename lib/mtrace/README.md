@@ -24,11 +24,11 @@ type Trace interface {
 
 ```go
 func demo(c *gin.Context) {
-  // ...
+	// ...
 	trace1 := mtrace.SubTrace(GetSpan(c), "trace1 name")
 	// do some thing ...
-  // optional
-  trace1.Log("xxx")
+	// optional
+	trace1.Log("xxx")
 	trace1.Done(zap.String("key", "value"))
 	// ...
 }
