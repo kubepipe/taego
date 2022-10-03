@@ -86,7 +86,7 @@ func (c *Client) call(ctx context.Context, method, path string, header http.Head
 ) (int, []byte, error) {
 
 	trace := mtrace.SubTrace(ctx, fmt.Sprintf("%s-%s%s", method, c.host, path))
-	defer func() { trace.Done() }()
+	defer trace.Done()
 
 	if c == nil {
 		return 500, nil, errors.New("client is nil")
