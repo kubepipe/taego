@@ -11,7 +11,7 @@ type Merr interface {
 
 相比于golang的error类型，Merr多了一个Code方法，目的在于标识特定error，调用方可根据特定error code执行特定操作.
 
-如何增加一个Merr？
+### 如何增加一个Merr
 
 lib/merrors/merr.go:
 
@@ -56,5 +56,21 @@ if unauthorized {
     "serverIp": "192.168.31.29"
   }
 }
+```
+
+### 如何在controller中使用Merr?
+
+controller返回err统一使用Merr类型，而Merr有2种创建方式，分别对应2种场景：
+
+1.当直接返回error时，使用merrors.New方法：
+
+```go
+merrors.New(errors.New("unknow error"))
+```
+
+2.当返回指定errcode时，在merrors中增加一个Merr，通过merrors.Get获取Merr：
+
+```go
+merrors.Get(merrors.ERROR_UNAUTHORIZED)
 ```
 
