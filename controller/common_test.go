@@ -94,7 +94,7 @@ func TestSetSpan(t *testing.T) {
 	}
 }
 
-func TestGetSpan(t *testing.T) {
+func TestgetSpan(t *testing.T) {
 	type args struct {
 		c *gin.Context
 	}
@@ -106,13 +106,13 @@ func TestGetSpan(t *testing.T) {
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
-		if got := GetSpan(tt.args.c); !reflect.DeepEqual(got, tt.want) {
-			t.Errorf("%q. GetSpan() = %v, want %v", tt.name, got, tt.want)
+		if got := getSpan(tt.args.c); !reflect.DeepEqual(got, tt.want) {
+			t.Errorf("%q. getSpan() = %v, want %v", tt.name, got, tt.want)
 		}
 	}
 }
 
-func TestGetTrace(t *testing.T) {
+func TestgetTrace(t *testing.T) {
 	type args struct {
 		c *gin.Context
 	}
@@ -124,8 +124,8 @@ func TestGetTrace(t *testing.T) {
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
-		if got := GetTrace(tt.args.c); !reflect.DeepEqual(got, tt.want) {
-			t.Errorf("%q. GetTrace() = %v, want %v", tt.name, got, tt.want)
+		if got := getTrace(tt.args.c); !reflect.DeepEqual(got, tt.want) {
+			t.Errorf("%q. getTrace() = %v, want %v", tt.name, got, tt.want)
 		}
 	}
 }
@@ -144,19 +144,5 @@ func Test_failNot200(t *testing.T) {
 	}
 	for _, tt := range tests {
 		failNot200(tt.args.c, tt.args.httpcode, tt.args.merr)
-	}
-}
-
-func TestGetSpanKey(t *testing.T) {
-	tests := []struct {
-		name string
-		want string
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		if got := GetSpanKey(); got != tt.want {
-			t.Errorf("%q. GetSpanKey() = %v, want %v", tt.name, got, tt.want)
-		}
 	}
 }

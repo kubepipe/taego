@@ -61,7 +61,7 @@ func res(c *gin.Context, httpcode int, response *mconst.Response, data any) {
 
 func traceInfo(c *gin.Context) *mconst.TraceInfo {
 
-	span := GetSpan(c)
+	span := getSpan(c)
 
 	return &mconst.TraceInfo{
 		Id:       mtrace.GetTraceId(span),
@@ -71,10 +71,6 @@ func traceInfo(c *gin.Context) *mconst.TraceInfo {
 }
 
 const spanKey = "mspan"
-
-func GetSpanKey() string {
-	return spanKey
-}
 
 func SetSpan(c *gin.Context) {
 	span, cancel := context.WithCancel(c.Request.Context())
@@ -92,13 +88,13 @@ func SetSpan(c *gin.Context) {
 	c.Next()
 }
 
-func GetSpan(c *gin.Context) context.Context {
+func getSpan(c *gin.Context) context.Context {
 	if ctx, ok := c.Get(spanKey); ok {
 		return ctx.(context.Context)
 	}
 	return context.Background()
 }
 
-func GetTrace(c *gin.Context) mtrace.Trace {
-	return mtrace.GetTrace(GetSpan(c))
+func getTrace(c *gin.Context) mtrace.Trace {
+	return mtrace.GetTrace(getSpan(c))
 }

@@ -113,3 +113,4 @@ trace,user等元数据存放在span context中贯穿整个链路，当客户端�
 
 MIT
 
+另外如果觉得不错麻烦给个🌟，如果想吐槽可以在github提issue，中英文皆可~
