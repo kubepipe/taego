@@ -52,7 +52,8 @@ func (m *msql) Query(ctx context.Context, query string, args ...any) Rows {
 func (m *msql) Exec(ctx context.Context, query string, args ...any) (sql.Result, error) {
 	trace := mtrace.SubTrace(ctx, query)
 	result, err := m.db.ExecContext(ctx, query, args...)
-	trace.Done(zap.Int64("rowsAffected", result.RowsAffected()))
+	affected, _ := result.RowsAffected()
+	trace.Done(zap.Int64("rowsAffected", affected))
 	return result, err
 }
 
