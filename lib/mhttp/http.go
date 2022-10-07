@@ -108,6 +108,7 @@ func (c *Client) call(ctx context.Context, method, path string, header http.Head
 		},
 		Header: c.header.Clone(),
 	}
+	req = req.WithContext(ctx)
 
 	req.Header.Set("Host", c.host)
 	req.Header.Set("Connection", "keep-alive")
