@@ -28,6 +28,7 @@ func (mrows *mrows) Close() error {
 }
 
 func (mrows *mrows) Scan(t any) error {
+	mrows.num = 0
 	if mrows.err != nil {
 		return mrows.err
 	}
